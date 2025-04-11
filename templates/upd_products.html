@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Товары {{product.id}}
+{% endblock %}
+
+{% block content %}
+<h1>Редактировать товары</h1>
+
+<form method="post">
+    <input value="{{product.manufacturer}}" type="text" name="manufacturer" placeholder="Введите производителя" class="form-control"><br>
+    <input value="{{product.expiration_date}}" type="Date" name="expiration_date" placeholder="Введите дату истечения срока действия" class="form-control"><br>
+    <input value="{{product.description}}" type="text" name="description" placeholder="Введите описание" class="form-control"><br>
+    <input value="{{product.quantity}}" type="text" name="quantity" placeholder="Введите количество" class="form-control"><br>
+    <input value="{{product.name}}" type="text" name="name" placeholder="Введите название товара" class="form-control"><br>
+    <input value="{{product.price}}" type="number" name="price" placeholder="Введите цену" class="form-control"><br>
+    <button class="btn btn-success" type="submit">Обновить</button>
+</form>
+{% endblock %}

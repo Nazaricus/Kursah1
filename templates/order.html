@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Заказы
+{% endblock %}
+
+{% block content %}
+<h1>Создание заказа</h1>
+
+<form method="POST">
+    <label for="id_seller">Выберите продавца:</label>
+    <select name="id_seller" required>
+        {% for seller in sellers %}
+        <option value="{{ seller.id }}">{{ seller.fio_seller }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label for="id_client">Выберите клиента:</label>
+    <select name="id_client" required>
+        {% for client in clients %}
+        <option value="{{ client.id }}">{{ client.fio_client }}</option>
+        {% endfor %}
+    </select><br><br>
+
+    <label for="date">Дата:</label>
+    <input type="date" name="date" required><br><br>
+
+    <label for="time">Время:</label>
+    <input type="time" name="time" required><br><br>
+
+    <h3>Выберите товары:</h3>
+    {% for product in products %}
+    <div>
+        <label>{{ product.name }} ({{ product.price }} руб.)</label>
+        <input type="hidden" name="product_id" value="{{ product.id }}">
+        <input type="number" name="quantity" min="0" value="0">
+    </div>
+    {% endfor %}<br>
+
+    <button type="submit">Добавить заказ</button>
+</form>
+{% endblock %}

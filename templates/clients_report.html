@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Отчёт по клиентам{% endblock %}
+{% block content %}
+<h1>Отчёт по клиентской базе</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>ФИО</th>
+            <th>Телефон</th>
+            <th>Адрес</th>
+            <th>Количество заказов</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for client in clients %}
+        <tr>
+            <td>{{ client.id }}</td>
+            <td>{{ client.fio_client }}</td>
+            <td>{{ client.phone_client }}</td>
+            <td>{{ client.address_client }}</td>
+            <td>{{ client.order_count }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

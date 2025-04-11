@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Редактирование заказа №{{ order.id }}
+{% endblock %}
+
+{% block content %}
+<h1>Редактирование заказа №{{ order.id }}</h1>
+
+<form method="POST">
+    <label for="id_seller">Выберите продавца:</label>
+    <select name="id_seller" required>
+        {% for seller in sellers %}
+        <option value="{{ seller.id }}" {% if seller.id == order.id_seller %}selected{% endif %}>
+            {{ seller.fio_seller }}
+        </option>
+        {% endfor %}
+    </select><br><br>
+
+    <label for="id_client">Выберите клиента:</label>
+    <select name="id_client" required>
+        {% for client in clients %}
+        <option value="{{ client.id }}" {% if client.id == order.id_client %}selected{% endif %}>
+            {{ client.fio_client }}
+        </option>
+        {% endfor %}
+    </select><br><br>
+
+    <label for="date">Дата:</label>
+    <input type="date" name="date" value="{{ order.date.strftime('%Y-%m-%d') }}" required><br><br>
+
+    <label for="time">Время:</label>
+    <input type="time" name="time" value="{{ order.time.strftime('%H:%M') }}" required><br><br>
+
+    <h3>Выберите товары:</h3>
+    {% for product in products %}
+    <div>
+        <label>{{ product.name }} ({{ product.price }} руб.)</label>
+        <input type="hidden" name="product_id" value="{{ product.id }}">
+        <input type="number" name="quantity" min="0" value="{{ selected_products.get(product.id, 0) }}">
+    </div>
+    {% endfor %}<br>
+
+    <button type="submit">Обновить заказ</button>
+</form>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Доставки
+{% endblock %}
+
+{% block content %}
+<h1>Доставки</h1>
+<form method="post">
+    <input type="text" name="address_delivery" placeholder="Введите адрес доставки" class="form-control"><br>
+    <input type="number" name="prise_delivery" placeholder="Введите цену доставки" class="form-control"><br>
+    <input type="date" name="deadlines" placeholder="Введите дату доставки" class="form-control"><br>
+
+    <!-- Выпадающий список для выбора ID заказа -->
+    <select name="id_order" class="form-control" required>
+        <option value="" disabled selected>Выберите заказ</option>
+        {% for order in orders %}
+        <option value="{{ order.id }}">ID: {{ order.id }} | Дата: {{ order.date }}</option>
+        {% endfor %}
+    </select>
+    <br>
+
+    <button class="btn btn-success" type="submit">Добавить</button>
+</form>
+{% endblock %}

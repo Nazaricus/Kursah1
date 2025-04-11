@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %} Сотрудники {{seller.id}} {% endblock %}
+
+{% block content %}
+<h1>Редактировать сотрудников</h1>
+
+<form method="post">
+    <input value="{{seller.fio_seller}}" type="text" name="fio_seller" placeholder="Введите ФИО сотрудника" class="form-control"><br>
+    <input value="{{seller.phone_seller}}" type="text" name="phone_seller" placeholder="Введите сотовый сотрудника" class="form-control"><br>
+    <input value="{{seller.specialization}}" type="text" name="specialization" placeholder="Введите специализацию сотрудника" class="form-control"><br>
+    <button class="btn btn-success" type="submit">Обновить</button>
+
+</form>
+
+{% endblock %}

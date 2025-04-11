@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Доставки {{delivery.id}}
+{% endblock %}
+
+{% block content %}
+<h1>Редактировать доставки</h1>
+<form method="post">
+    <input value="{{delivery.address_delivery}}" type="text" name="address_delivery" placeholder="Введите адрес доставки" class="form-control"><br>
+    <input value="{{delivery.prise_delivery}}" type="number" name="prise_delivery" placeholder="Введите цену доставки" class="form-control"><br>
+    <input value="{{delivery.deadlines}}" type="Date" name="deadlines" placeholder="Введите дату доставки" class="form-control"><br>
+    <input value="{{delivery.id_order}}" type="number" name="id_order" placeholder="Введите id заказа" class="form-control"><br>
+    <button class="btn btn-success" type="submit">Обновить</button>
+
+</form>
+{% endblock %}

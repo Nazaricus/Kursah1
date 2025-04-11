@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Клиенты {{client.id}}
+{% endblock %}
+
+{% block content %}
+<h1>Редактирование клиентов</h1>
+
+<form method="post">
+    <input value="{{client.fio_client}}" type="text" name="fio_client" placeholder="Введите ФИО клиента" class="form-control"><br>
+    <input value="{{client.phone_client}}" type="text" name="phone_client" placeholder="Введите сотовый клиента" class="form-control"><br>
+    <input value="{{client.address_client}}" type="text" name="address_client" placeholder="Введите адрес клиента" class="form-control"><br>
+    <button class="btn btn-success" type="submit">Обновить</button>
+
+</form>
+{% endblock %}

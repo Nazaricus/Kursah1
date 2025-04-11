@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Таблицы
+{% endblock %}
+
+{% block content %}
+
+<h2>Продавцы</h2>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>ФИО</th>
+            <th>Телефон</th>
+            <th>Специализация</th>
+            <th>Управление</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for seller in sellers %}
+        <tr>
+            <td>{{ seller.id }}</td>
+            <td>{{ seller.fio_seller }}</td>
+            <td>{{ seller.phone_seller }}</td>
+            <td>{{ seller.specialization }}</td>
+            <td>
+                <a href="{{ url_for('update_seller', id=seller.id) }}" class="btn btn-sm btn-secondary">Редактировать</a>
+                <a href="{{ url_for('delete_seller', id=seller.id) }}" class="btn btn-sm btn-danger">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Клиенты</h2>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>ФИО</th>
+            <th>Телефон</th>
+            <th>Адрес</th>
+            <th>Управление</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for client in clients %}
+        <tr>
+            <td>{{ client.id }}</td>
+            <td>{{ client.fio_client }}</td>
+            <td>{{ client.phone_client }}</td>
+            <td>{{ client.address_client }}</td>
+            <td>
+                <a href="{{ url_for('update_client', id=client.id) }}" class="btn btn-sm btn-secondary">Редактировать</a>
+                <a href="{{ url_for('delete_client', id=client.id) }}" class="btn btn-sm btn-danger">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+<h2>Заказы</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Время</th>
+        <th>Дата</th>
+        <th>Продавец</th>
+        <th>Клиент</th>
+        <th>Товары (Количество)</th>
+        <th>Действия</th>
+    </tr>
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.time }}</td>
+        <td>{{ order.date }}</td>
+        <td>{% for seller in sellers if seller.id == order.id_seller %}{{ seller.fio_seller }}{% endfor %}</td>
+        <td>{% for client in clients if client.id == order.id_client %}{{ client.fio_client }}{% endfor %}</td>
+        <td>{{ order.products or "Нет товаров" }}</td>
+        <td>
+            <a href="/order/{{ order.id }}/upd" class="btn btn-sm btn-secondary">Редактировать</a>
+            <a href="/delete_order/{{ order.id }}" class="btn btn-sm btn-danger">Удалить</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+
+<h2>Доставки</h2>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Сроки</th>
+            <th>Цена доставки</th>
+            <th>Адрес доставки</th>
+            <th>ID Заказа</th>
+            <th>Управление</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for delivery in deliveries %}
+        <tr>
+            <td>{{ delivery.id }}</td>
+            <td>{{ delivery.deadlines }}</td>
+            <td>{{ delivery.prise_delivery }}</td>
+            <td>{{ delivery.address_delivery }}</td>
+            <td>{{ delivery.id_order }}</td>
+            <td>
+                <a href="{{ url_for('update_delivery', id=delivery.id) }}" class="btn btn-sm btn-secondary">Редактировать</a>
+                <a href="{{ url_for('delete_delivery', id=delivery.id) }}" class="btn btn-sm btn-danger">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Товары</h2>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Производитель</th>
+            <th>Срок годности</th>
+            <th>Описание</th>
+            <th>Количество</th>
+            <th>Название</th>
+            <th>Цена</th>
+            <th>Управление</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.manufacturer }}</td>
+            <td>{{ product.expiration_date }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.quantity }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price }}</td>
+            <td>
+                <a href="{{ url_for('update_product', id=product.id) }}" class="btn btn-sm btn-secondary">Редактировать</a>
+                <a href="{{ url_for('delete_product', id=product.id) }}" class="btn btn-sm btn-danger">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{{ url_for('sales_report') }}" class="btn btn-primary">Посмотреть отчет о продажах</a>
+<a href="{{ url_for('clients_report') }}" class="btn btn-primary">Посмотреть отчет по клиентской базе</a>
+
+{% endblock %}

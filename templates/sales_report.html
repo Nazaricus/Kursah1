@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Отчёт по продажам{% endblock %}
+{% block content %}
+<h1>Отчёт по продажам</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID Заказа</th>
+            <th>Дата</th>
+            <th>Время</th>
+            <th>Продавец</th>
+            <th>Клиент</th>
+            <th>Общая стоимость</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for sale in sales %}
+        <tr>
+            <td>{{ sale.order_id }}</td>
+            <td>{{ sale.order_date }}</td>
+            <td>{{ sale.order_time }}</td>
+            <td>{{ sale.seller }}</td>
+            <td>{{ sale.client }}</td>
+            <td>{{ sale.total_price }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{{ url_for('download_sales_report') }}" class="btn btn-primary">Скачать Excel</a>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Товары
+{% endblock %}
+
+{% block content %}
+<h1>Товары</h1>
+<form method="post">
+    <input type="text" name="manufacturer" placeholder="Введите производителя" class="form-control" required><br>
+    <input type="date" name="expiration_date" placeholder="Введите дату истечения срока действия" class="form-control" required><br>
+    <input type="text" name="description" placeholder="Введите описание" class="form-control" required><br>
+    <input type="number" name="quantity" placeholder="Введите количество" class="form-control" required><br>
+    <input type="text" name="name" placeholder="Введите название товара" class="form-control" required><br>
+    <input type="number" name="price" placeholder="Введите цену" class="form-control" required><br>
+    <button class="btn btn-success" type="submit">Добавить</button>
+</form>
+{% endblock %}
