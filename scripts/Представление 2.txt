@@ -1,0 +1,20 @@
+Представление №2
+Формулировка на естественном языке:
+Получение информации о заказах с данными о продавцах, товарах, цене и количестве.
+
+
+Формулировка запроса на языке SQL:
+SELECT 
+    o.id AS order_id,
+    s.fio_seller AS seller_full_name,
+    p.name AS product_name,
+    p.price AS product_price,
+    op.quantity AS product_quantity
+FROM 
+    "Order" o
+JOIN 
+    "Seller" s ON o.id_seller = s.id
+JOIN 
+    "OrderProduct" op ON o.id = op.order_id
+JOIN 
+    "Product" p ON op.product_id = p.id;

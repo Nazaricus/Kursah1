@@ -1,0 +1,32 @@
+Представление №1
+Формулировка на естественном языке:
+Получение информации обо всех клиентах.
+
+
+Формулировка запроса на языке SQL:
+SELECT 
+    c.id AS client_id,
+    c.fio_client AS full_name,
+    c.phone_client AS phone_number,
+    c.address_client AS address,
+    o.id AS order_id,
+    o.time AS order_time,
+    o.date AS order_date,
+    d.id AS delivery_id,
+    d.deadlines AS delivery_deadline,
+    d.prise_delivery AS delivery_price,
+    d.address_delivery AS delivery_address,
+    p.id AS product_id,
+    p.name AS product_name,
+    p.price AS product_price,
+    op.quantity AS product_quantity
+FROM 
+    “Client” c
+LEFT JOIN 
+    “Order” o ON c.id = o.id_client
+LEFT JOIN 
+    “Delivery” d ON o.id = d.id_order
+LEFT JOIN 
+    “OrderProduct” op ON o.id = op.order_id
+LEFT JOIN 
+    “Product” p ON op.product_id = p.id;

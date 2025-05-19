@@ -1,0 +1,22 @@
+Триггер №2
+Формулировка тригера на естественном языке:
+При регистрации доставки проводится проверка правильной даты доставки. Если дата прошедшая, то выводится ошибка.
+
+Код, для создания процедуры:
+-- Функция для проверки даты доставки
+CREATE OR REPLACE FUNCTION check_delivery_date()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Проверяем, что дата доставки не раньше даты заказа
+    IF NEW.deadlines <= (SELECT date FROM "Order" WHERE id = NEW.id_order) THEN
+        RAISE EXCEPTION 'Дата доставки должна быть позже даты заказа';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Создание триггера для таблицы "Delivery"
+CREATE TRIGGER trg_check_delivery_date
+BEFORE INSERT OR UPDATE ON "Delivery"
+FOR EACH ROW
+EXECUTE FUNCTION check_delivery_date();

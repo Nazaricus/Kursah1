@@ -1,0 +1,35 @@
+Триггер №3
+Формулировка тригера на естественном языке:
+Функция для проверки количества товара на складе, для последующего внесения в заказ.
+
+Код, для создания процедуры:
+CREATE OR REPLACE FUNCTION check_product_quantity()
+RETURNS TRIGGER AS $$
+DECLARE
+    available_stock INT;
+BEGIN
+    -- Получаем доступное количество товара на складе
+    SELECT quantity INTO available_stock
+    FROM "Product"
+    WHERE id = NEW.product_id;
+
+    -- Проверяем, что запрашиваемое количество не превышает доступное
+    IF NEW.quantity > available_stock THEN
+        RAISE EXCEPTION 'Недостаточно товара на складе. Доступно: %', available_stock;
+    END IF;
+
+    -- Обновляем количество товара на складе (уменьшаем его)
+    UPDATE "Product"
+    SET quantity = quantity - NEW.quantity
+    WHERE id = NEW.product_id;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Создание триггера для таблицы "OrderProduct"
+CREATE TRIGGER trg_check_product_quantity
+BEFORE INSERT OR UPDATE ON "OrderProduct"
+FOR EACH ROW
+EXECUTE FUNCTION check_product_quantity();
+

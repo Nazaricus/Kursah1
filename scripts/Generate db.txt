@@ -1,0 +1,231 @@
+/*==============================================================*/
+/* DBMS name:      PostgreSQL 9.x                               */
+/* Created on:     19.05.2025 13:37:05                          */
+/*==============================================================*/
+
+
+drop index Client_PK;
+
+drop table Client;
+
+drop index "Makes_out(d)_FK";
+
+drop index Delivery_PK;
+
+drop table Delivery;
+
+drop index Contains_FK;
+
+drop index Makes_out_FK;
+
+drop index Does_FK;
+
+drop index Order_PK;
+
+drop table "Order";
+
+drop index "Compile(2)_FK";
+
+drop index "Compile(1)_FK";
+
+drop index Order_line_PK;
+
+drop table Order_line;
+
+drop index Product_PK;
+
+drop table Product;
+
+drop index Seller_PK;
+
+drop table Seller;
+
+/*==============================================================*/
+/* Table: Client                                                */
+/*==============================================================*/
+create table Client (
+   id_client            INT4                 not null,
+   FIO_client           VARCHAR(1024)        null,
+   Phone_client         VARCHAR(1024)        null,
+   Address_client       VARCHAR(1024)        null,
+   constraint PK_CLIENT primary key (id_client)
+);
+
+/*==============================================================*/
+/* Index: Client_PK                                             */
+/*==============================================================*/
+create unique index Client_PK on Client (
+id_client
+);
+
+/*==============================================================*/
+/* Table: Delivery                                              */
+/*==============================================================*/
+create table Delivery (
+   id_seller            INT4                 not null,
+   id_delivery          INT4                 not null,
+   Deadlines            DATE                 null,
+   Prise                INT4                 null,
+   Address_delivery     VARCHAR(1024)        null,
+   constraint PK_DELIVERY primary key (id_seller, id_delivery)
+);
+
+/*==============================================================*/
+/* Index: Delivery_PK                                           */
+/*==============================================================*/
+create unique index Delivery_PK on Delivery (
+id_seller,
+id_delivery
+);
+
+/*==============================================================*/
+/* Index: "Makes_out(d)_FK"                                     */
+/*==============================================================*/
+create  index "Makes_out(d)_FK" on Delivery (
+id_seller
+);
+
+/*==============================================================*/
+/* Table: "Order"                                               */
+/*==============================================================*/
+create table "Order" (
+   id_order             INT4                 not null,
+   id_client            INT4                 not null,
+   id_seller            INT4                 not null,
+   Del_id_seller        INT4                 null,
+   id_delivery          INT4                 null,
+   time_order           DATE                 null,
+   date_order           DATE                 null,
+   constraint PK_ORDER primary key (id_order)
+);
+
+/*==============================================================*/
+/* Index: Order_PK                                              */
+/*==============================================================*/
+create unique index Order_PK on "Order" (
+id_order
+);
+
+/*==============================================================*/
+/* Index: Does_FK                                               */
+/*==============================================================*/
+create  index Does_FK on "Order" (
+id_client
+);
+
+/*==============================================================*/
+/* Index: Makes_out_FK                                          */
+/*==============================================================*/
+create  index Makes_out_FK on "Order" (
+id_seller
+);
+
+/*==============================================================*/
+/* Index: Contains_FK                                           */
+/*==============================================================*/
+create  index Contains_FK on "Order" (
+Del_id_seller,
+id_delivery
+);
+
+/*==============================================================*/
+/* Table: Order_line                                            */
+/*==============================================================*/
+create table Order_line (
+   id_product           INT4                 not null,
+   id_order             INT4                 not null,
+   Quantity             INT4                 null,
+   Pick_up              VARCHAR(1024)        null,
+   constraint PK_ORDER_LINE primary key (id_product, id_order)
+);
+
+/*==============================================================*/
+/* Index: Order_line_PK                                         */
+/*==============================================================*/
+create unique index Order_line_PK on Order_line (
+id_product,
+id_order
+);
+
+/*==============================================================*/
+/* Index: "Compile(1)_FK"                                       */
+/*==============================================================*/
+create  index "Compile(1)_FK" on Order_line (
+id_order
+);
+
+/*==============================================================*/
+/* Index: "Compile(2)_FK"                                       */
+/*==============================================================*/
+create  index "Compile(2)_FK" on Order_line (
+id_product
+);
+
+/*==============================================================*/
+/* Table: Product                                               */
+/*==============================================================*/
+create table Product (
+   id_product           INT4                 not null,
+   Manufacturer         VARCHAR(1024)        null,
+   Expiration_date      DATE                 null,
+   Description          VARCHAR(1024)        null,
+   Quantity             INT4                 null,
+   Name                 VARCHAR(1024)        null,
+   constraint PK_PRODUCT primary key (id_product)
+);
+
+/*==============================================================*/
+/* Index: Product_PK                                            */
+/*==============================================================*/
+create unique index Product_PK on Product (
+id_product
+);
+
+/*==============================================================*/
+/* Table: Seller                                                */
+/*==============================================================*/
+create table Seller (
+   id_seller            INT4                 not null,
+   FIO_seller           VARCHAR(1024)        null,
+   Phone_seller         VARCHAR(1024)        null,
+   Specialization       VARCHAR(1024)        null,
+   constraint PK_SELLER primary key (id_seller)
+);
+
+/*==============================================================*/
+/* Index: Seller_PK                                             */
+/*==============================================================*/
+create unique index Seller_PK on Seller (
+id_seller
+);
+
+alter table Delivery
+   add constraint FK_DELIVERY_MAKES_OUT_SELLER foreign key (id_seller)
+      references Seller (id_seller)
+      on delete restrict on update restrict;
+
+alter table "Order"
+   add constraint FK_ORDER_CONTAINS_DELIVERY foreign key (Del_id_seller, id_delivery)
+      references Delivery (id_seller, id_delivery)
+      on delete restrict on update restrict;
+
+alter table "Order"
+   add constraint FK_ORDER_DOES_CLIENT foreign key (id_client)
+      references Client (id_client)
+      on delete restrict on update restrict;
+
+alter table "Order"
+   add constraint FK_ORDER_MAKES_OUT_SELLER foreign key (id_seller)
+      references Seller (id_seller)
+      on delete restrict on update restrict;
+
+alter table Order_line
+   add constraint "FK_ORDER_LI_COMPILE(1_ORDER" foreign key (id_order)
+      references "Order" (id_order)
+      on delete restrict on update restrict;
+
+alter table Order_line
+   add constraint "FK_ORDER_LI_COMPILE(2_PRODUCT" foreign key (id_product)
+      references Product (id_product)
+      on delete restrict on update restrict;
+

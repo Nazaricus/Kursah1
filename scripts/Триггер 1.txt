@@ -1,0 +1,23 @@
+Триггер №1
+Формулировка триггера на естественном языке:
+При создании заказа производится проверка на дату заказа. Если дата прошедшая, то выводится ошибка.
+
+Код, для создания процедуры:
+-- Функция для проверки даты заказа
+CREATE OR REPLACE FUNCTION check_order_date()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Проверяем, что дата заказа не больше текущей даты
+    IF NEW.date > CURRENT_DATE THEN
+        RAISE EXCEPTION 'Дата заказа не может быть больше текущей даты';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Создание триггера для таблицы "Order"
+CREATE TRIGGER trg_check_order_date
+BEFORE INSERT OR UPDATE ON "Order"
+FOR EACH ROW
+EXECUTE FUNCTION check_order_date();
+
